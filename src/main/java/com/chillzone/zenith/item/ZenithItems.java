@@ -1,7 +1,6 @@
 package com.chillzone.zenith.item;
 
 import com.chillzone.zenith.ZenithMod;
-import com.chillzone.zenith.block.ZenithBlocks;
 import com.chillzone.zenith.progression.ZenithCategory;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
@@ -13,9 +12,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.ItemLore;
 
@@ -45,6 +41,22 @@ public final class ZenithItems {
 
     private static Item material(String name) {
         return register(name, Item::new, new Item.Properties());
+    }
+
+    private static Item polymerBaseForSword(String id) {
+        return switch (id) {
+            case "ender_blade",
+                 "shulker_blade",
+                 "sword_of_undying",
+                 "mansion_blade",
+                 "prismarine_blade",
+                 "sponge_blade",
+                 "echo_blade",
+                 "blade_of_fire",
+                 "ghost_blade",
+                 "golden_desire" -> Items.DIAMOND_SWORD;
+            default -> Items.NETHERITE_SWORD;
+        };
     }
 
     private static Item sword(
@@ -80,7 +92,7 @@ public final class ZenithItems {
 
         return register(
                 id,
-                settings -> new AbilitySwordItem(settings, ability, category, uniqueBoss),
+                settings -> new AbilitySwordItem(settings, ability, category, uniqueBoss, polymerBaseForSword(id)),
                 properties
         );
     }
@@ -162,9 +174,9 @@ public final class ZenithItems {
             case ENDER_STEP -> "Blink 4 blocks forward.";
             case SHULKER_SHOT -> "Blink 5 blocks backward and slightly sideways.";
             case DRAGON_WARP -> "Moving: 12-block damaging leap. Standing: breath burst, then retreat.";
-            case LAST_STAND -> "Gain Absorption VIII for 8 seconds.";
+            case LAST_STAND -> "Gain exactly 8 absorption hearts for 8 seconds.";
             case VEX_CALL -> "Gain Speed III + Strength III for 8 seconds.";
-            case RAVAGER_CHARGE -> "Ram forward, then gain Speed III + Strength III for 10 seconds.";
+            case RAVAGER_CHARGE -> "Ram forward, then gain Speed III + Strength III for 5 seconds.";
             case GUARDIAN_RAY -> "Hit your aimed target with Mining Fatigue for 10 seconds.";
             case TIDAL_BURST -> "Push nearby enemies away with a non-damaging wave.";
             case ELDER_CURSE -> "Nearby enemies in water immediately lose their air.";
@@ -180,37 +192,6 @@ public final class ZenithItems {
         };
     }
 
-    // Materials
-    // Phase 1 server-side conversion:
-    // Ender Essence is now a vanilla-backed stack, NOT a registered custom item.
-    // Keep this Item reference only as the vanilla base for drop plumbing.
-    public static final Item ENDER_ESSENCE = Items.AMETHYST_SHARD;
-
-    public static ItemStack createEnderEssence(int count) {
-        ItemStack stack = new ItemStack(Items.AMETHYST_SHARD, count);
-        ZenithStackIdentity.mark(stack, "ender_essence");
-        stack.set(
-                DataComponents.CUSTOM_NAME,
-                Component.literal("Ender Essence").withStyle(
-                        style -> style
-                                .withColor(ChatFormatting.DARK_PURPLE)
-                                .withItalic(false)
-                )
-        );
-        return stack;
-    }
-    public static final Item SHULKER_ESSENCE = material("shulker_essence");
-    public static final Item RAVAGER_HORN = material("ravager_horn");
-    public static final Item RAVAGER_HEART = material("ravager_heart");
-    public static final Item MANSION_KEY = material("mansion_key");
-    public static final Item GUARDIAN_SCALE = material("guardian_scale");
-    public static final Item ELDER_GUARDIAN_CORE = material("elder_guardian_core");
-    public static final Item WARDEN_HEART = material("warden_heart");
-    public static final Item BLAZING_CORE = material("blazing_core");
-    public static final Item WITHERED_FRAGMENT = material("withered_fragment");
-    public static final Item PIGLIN_SIGIL = material("piglin_sigil");
-    public static final Item BRUTES_EMBLEM = material("brutes_emblem");
-    public static final Item GHAST_ESSENCE = material("ghast_essence");
 
     // Ender
     public static final Item ENDER_BLADE = sword(
@@ -315,80 +296,9 @@ public final class ZenithItems {
     );
 
 
-    public static final ResourceKey<CreativeModeTab> ZENITH_CREATIVE_TAB_KEY =
-            ResourceKey.create(
-                    BuiltInRegistries.CREATIVE_MODE_TAB.key(),
-                    Identifier.fromNamespaceAndPath(ZenithMod.MOD_ID, "zenith_tab")
-            );
-
-    public static final CreativeModeTab ZENITH_CREATIVE_TAB =
-            FabricCreativeModeTab.builder()
-                    .icon(() -> new ItemStack(ZENITH_BLADE))
-                    .title(Component.translatable("creativeTab.chillzonezenith"))
-                    .displayItems((parameters, output) -> {
-                    
-    // Materials
-                        output.accept(ENDER_ESSENCE);
-                        output.accept(SHULKER_ESSENCE);
-                        output.accept(RAVAGER_HORN);
-                        output.accept(RAVAGER_HEART);
-                        output.accept(MANSION_KEY);
-                        output.accept(GUARDIAN_SCALE);
-                        output.accept(ELDER_GUARDIAN_CORE);
-                        output.accept(WARDEN_HEART);
-                        output.accept(BLAZING_CORE);
-                        output.accept(WITHERED_FRAGMENT);
-                        output.accept(PIGLIN_SIGIL);
-                        output.accept(BRUTES_EMBLEM);
-                        output.accept(GHAST_ESSENCE);
-
-                        // Ender
-                        output.accept(ENDER_BLADE);
-                        output.accept(SHULKER_BLADE);
-                        output.accept(ENDER_DRAGON_BLADE);
-
-                        // Ravager
-                        output.accept(SWORD_OF_UNDYING);
-                        output.accept(MANSION_BLADE);
-                        output.accept(RAVAGER_BLADE);
-
-                        // Guardian
-                        output.accept(PRISMARINE_BLADE);
-                        output.accept(SPONGE_BLADE);
-                        output.accept(ELDER_TIDE_BLADE);
-                        output.accept(ELDER_GUARDIAN_BLADE);
-
-                        // Warden
-                        output.accept(ECHO_BLADE);
-                        output.accept(WARDENS_WRATH);
-                        output.accept(WARDEN_BLADE);
-
-                        // Wither
-                        output.accept(BLADE_OF_FIRE);
-                        output.accept(GOLDEN_DESIRE);
-                        output.accept(GHOST_BLADE);
-                        output.accept(WITHER_BLADE);
-
-                        // Final
-                        output.accept(ZENITH_BLADE);
-
-                        // Custom crafting stations
-                        // Fabric 26.2 supports adding Blocks directly in the
-                        // custom creative-tab builder.
-                        output.accept(ZenithBlocks.ENDER_CRAFTING_TABLE);
-                        output.accept(ZenithBlocks.RAVAGER_CRAFTING_TABLE);
-                        output.accept(ZenithBlocks.GUARDIAN_CRAFTING_TABLE);
-                        output.accept(ZenithBlocks.WARDEN_CRAFTING_TABLE);
-                        output.accept(ZenithBlocks.WITHER_CRAFTING_TABLE);
-                        output.accept(ZenithBlocks.ZENITH_CRAFTING_TABLE);
-                    })
-                    .build();
-
     public static void initialize() {
-        Registry.register(
-                BuiltInRegistries.CREATIVE_MODE_TAB,
-                ZENITH_CREATIVE_TAB_KEY,
-                ZENITH_CREATIVE_TAB
-        );
+        // Static fields register the real server-side custom swords.
+        // No custom vanilla creative-tab registry entry is created.
+        // Use /zenith give for admin testing.
     }
 }

@@ -12,7 +12,7 @@
     "D": "minecraft:dark_oak_planks",
     "C": "minecraft:crafting_table",
     "H": "minecraft:crossbow",
-    "R": "chillzonezenith:ravager_horn"
+    "R": "minecraft:goat_horn"
   },
   "result": {
     "count": 1,

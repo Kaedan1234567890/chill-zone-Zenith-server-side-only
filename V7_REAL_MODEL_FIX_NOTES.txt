@@ -1,0 +1,19 @@
+ZENITH v7 - ACTUAL POLYMER MODEL FIX
+
+Root cause found in Polymer 0.17.x API:
+PolymerItem#getPolymerItemModel defaults to returning the custom stack's
+DataComponents.ITEM_MODEL. So returning Items.DIAMOND_SWORD or
+Items.NETHERITE_SWORD from getPolymerItem() was NOT enough. The client was
+still being sent chillzonezenith:<custom_item> as the model id, which an
+unmodded client cannot resolve, producing the giant black/magenta missing model.
+
+Fix:
+- AbilitySwordItem explicitly overrides getPolymerItemModel(...) and returns null.
+  Polymer documents null as fallback to the base item's model.
+- ZenithCraftingTableItem does the same.
+- Intermediate blades use Diamond Sword as base item.
+- Boss + Zenith blades use Netherite Sword as base item.
+- Crafting-table blocks/items use vanilla Crafting Table visuals.
+- No Zenith resource pack is forced.
+
+Gameplay logic unchanged.

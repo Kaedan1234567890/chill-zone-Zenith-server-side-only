@@ -1,0 +1,47 @@
+ZENITH SERVER-SIDE CONVERSION v3 - LOAD FIX
+
+Observed behaviour:
+- game/world loads
+- Zenith appears to do nothing
+- /zenith command does not exist
+
+Likely cause fixed:
+The previous build set fabric.mod.json environment to "server".
+Fabric treats that as dedicated-server-only, so the mod can be ignored when
+testing inside a normal client/integrated singleplayer world.
+
+Changes:
+1. fabric.mod.json environment changed from "server" to "*".
+   This does NOT make the mod required on players' clients.
+   It simply allows the same jar to load in a dedicated server OR a local
+   integrated test world.
+
+2. Added startup log messages:
+   "Loading Chill Zone Zenith..."
+   "Chill Zone Zenith loaded. /zenith commands registered."
+
+3. Gameplay/command registration now happens before Polymer resource-pack
+   setup, making initialization order easier to diagnose.
+
+No intended changes to:
+- recipes
+- swords
+- abilities
+- 8-heart Sword of Undying update
+- cooldowns
+- LuckPerms permissions
+- Polymer mappings
+- crafting progression
+
+How to verify:
+- Put the built JAR in the mods folder.
+- Start the game/server.
+- Look for the log line:
+    Chill Zone Zenith loaded. /zenith commands registered.
+- Type:
+    /zenith
+  or begin typing:
+    /zenith crafting recipe
+
+If that log line is absent, send the latest.log/server log because the mod
+is not loading at all.

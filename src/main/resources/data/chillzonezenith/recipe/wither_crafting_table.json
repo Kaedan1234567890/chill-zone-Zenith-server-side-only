@@ -12,7 +12,7 @@
     "N": "minecraft:nether_bricks",
     "C": "minecraft:crafting_table",
     "A": "minecraft:soul_sand",
-    "D": "minecraft:ancient_debris"
+    "D": "minecraft:wither_skeleton_skull"
   },
   "result": {
     "count": 1,

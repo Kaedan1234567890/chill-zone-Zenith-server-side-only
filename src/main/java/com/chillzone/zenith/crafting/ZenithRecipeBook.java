@@ -1,7 +1,5 @@
 package com.chillzone.zenith.crafting;
 
-import com.chillzone.zenith.item.ZenithStackIdentity;
-
 import com.chillzone.zenith.ZenithMod;
 import com.chillzone.zenith.progression.ZenithCategory;
 import com.chillzone.zenith.progression.ZenithProgressionState;
@@ -42,17 +40,49 @@ public final class ZenithRecipeBook {
         return new RecipeDef(category, cz(output), uniqueBoss, grid);
     }
 
+    public static final List<RecipeDef> TABLE_RECIPES = List.of(
+        recipe(ZenithCategory.ENDER, "ender_crafting_table", false,
+                mc("end_rod"), mc("ender_eye"), mc("end_rod"),
+                mc("ender_eye"), mc("crafting_table"), mc("ender_eye"),
+                mc("end_rod"), mc("ender_eye"), mc("end_rod")),
+
+        recipe(ZenithCategory.RAVAGER, "ravager_crafting_table", false,
+                mc("emerald_block"), mc("totem_of_undying"), mc("emerald_block"),
+                mc("dark_oak_planks"), mc("crafting_table"), mc("dark_oak_planks"),
+                mc("crossbow"), mc("goat_horn"), mc("crossbow")),
+
+        recipe(ZenithCategory.GUARDIAN, "guardian_crafting_table", false,
+                mc("sea_lantern"), mc("heart_of_the_sea"), mc("sea_lantern"),
+                mc("dark_prismarine"), mc("crafting_table"), mc("dark_prismarine"),
+                mc("prismarine_bricks"), mc("wet_sponge"), mc("prismarine_bricks")),
+
+        recipe(ZenithCategory.WARDEN, "warden_crafting_table", false,
+                mc("echo_shard"), mc("sculk_catalyst"), mc("echo_shard"),
+                mc("sculk_sensor"), mc("crafting_table"), mc("sculk_sensor"),
+                mc("echo_shard"), mc("sculk_catalyst"), mc("echo_shard")),
+
+        recipe(ZenithCategory.WITHER, "wither_crafting_table", false,
+                mc("blaze_rod"), mc("wither_skeleton_skull"), mc("blaze_rod"),
+                mc("nether_bricks"), mc("crafting_table"), mc("nether_bricks"),
+                mc("soul_sand"), mc("wither_skeleton_skull"), mc("soul_sand")),
+
+        recipe(ZenithCategory.ZENITH, "zenith_crafting_table", false,
+                cz("ender_crafting_table"), mc("crafting_table"), cz("ravager_crafting_table"),
+                mc("crafting_table"), cz("guardian_crafting_table"), mc("crafting_table"),
+                cz("warden_crafting_table"), mc("crafting_table"), cz("wither_crafting_table"))
+    );
+
     public static final List<RecipeDef> RECIPES = List.of(
         // ENDER
         recipe(ZenithCategory.ENDER, "ender_blade", false,
-                cz("ender_essence"), mc("ender_eye"), cz("ender_essence"),
+                mc("end_rod"), mc("ender_eye"), mc("end_rod"),
                 mc("ender_eye"), mc("diamond_sword"), mc("ender_eye"),
-                mc("chorus_fruit"), mc("stick"), mc("chorus_fruit")),
+                mc("chorus_fruit"), mc("blaze_rod"), mc("chorus_fruit")),
 
         recipe(ZenithCategory.ENDER, "shulker_blade", false,
-                cz("shulker_essence"), mc("shulker_shell"), cz("shulker_essence"),
+                mc("end_rod"), mc("shulker_shell"), mc("end_rod"),
                 mc("shulker_shell"), mc("diamond_sword"), mc("shulker_shell"),
-                mc("chorus_fruit"), mc("ender_eye"), mc("chorus_fruit")),
+                mc("chorus_fruit"), mc("end_crystal"), mc("chorus_fruit")),
 
         recipe(ZenithCategory.ENDER, "ender_dragon_blade", true,
                 mc("end_rod"), mc("dragon_breath"), mc("end_rod"),
@@ -61,25 +91,25 @@ public final class ZenithRecipeBook {
 
         // RAVAGER
         recipe(ZenithCategory.RAVAGER, "sword_of_undying", false,
-                mc("totem_of_undying"), cz("ravager_horn"), mc("totem_of_undying"),
+                mc("totem_of_undying"), mc("goat_horn"), mc("totem_of_undying"),
                 mc("emerald_block"), mc("diamond_sword"), mc("emerald_block"),
                 mc("crossbow"), mc("redstone"), mc("crossbow")),
 
         recipe(ZenithCategory.RAVAGER, "mansion_blade", false,
-                mc("totem_of_undying"), cz("mansion_key"), mc("totem_of_undying"),
+                mc("totem_of_undying"), mc("ominous_trial_key"), mc("totem_of_undying"),
                 mc("emerald_block"), mc("diamond_sword"), mc("emerald_block"),
-                mc("dark_oak_log"), mc("crossbow"), mc("dark_oak_log")),
+                mc("dark_oak_trapdoor"), mc("crossbow"), mc("dark_oak_trapdoor")),
 
         recipe(ZenithCategory.RAVAGER, "ravager_blade", true,
-                mc("totem_of_undying"), cz("ravager_horn"), mc("totem_of_undying"),
-                cz("sword_of_undying"), cz("ravager_heart"), cz("mansion_blade"),
+                mc("totem_of_undying"), mc("goat_horn"), mc("totem_of_undying"),
+                cz("sword_of_undying"), mc("totem_of_undying"), cz("mansion_blade"),
                 mc("emerald_block"), mc("netherite_ingot"), mc("emerald_block")),
 
         // GUARDIAN
         recipe(ZenithCategory.GUARDIAN, "prismarine_blade", false,
-                mc("prismarine_shard"), cz("guardian_scale"), mc("prismarine_shard"),
+                mc("prismarine_shard"), mc("prismarine_shard"), mc("prismarine_shard"),
                 mc("prismarine_crystals"), mc("diamond_sword"), mc("prismarine_crystals"),
-                mc("dark_prismarine"), cz("guardian_scale"), mc("dark_prismarine")),
+                mc("dark_prismarine"), mc("prismarine_shard"), mc("dark_prismarine")),
 
         recipe(ZenithCategory.GUARDIAN, "sponge_blade", false,
                 mc("wet_sponge"), mc("sponge"), mc("wet_sponge"),
@@ -87,12 +117,12 @@ public final class ZenithRecipeBook {
                 mc("prismarine_shard"), mc("heart_of_the_sea"), mc("prismarine_shard")),
 
         recipe(ZenithCategory.GUARDIAN, "elder_tide_blade", false,
-                mc("sea_lantern"), cz("elder_guardian_core"), mc("sea_lantern"),
+                mc("sea_lantern"), mc("heart_of_the_sea"), mc("sea_lantern"),
                 mc("dark_prismarine"), mc("netherite_sword"), mc("dark_prismarine"),
-                mc("wet_sponge"), cz("elder_guardian_core"), mc("wet_sponge")),
+                mc("wet_sponge"), mc("heart_of_the_sea"), mc("wet_sponge")),
 
         recipe(ZenithCategory.GUARDIAN, "elder_guardian_blade", true,
-                mc("sponge"), cz("elder_guardian_core"), mc("sponge"),
+                mc("sponge"), mc("heart_of_the_sea"), mc("sponge"),
                 cz("prismarine_blade"), cz("elder_tide_blade"), cz("sponge_blade"),
                 mc("sea_lantern"), mc("heart_of_the_sea"), mc("sea_lantern")),
 
@@ -103,30 +133,30 @@ public final class ZenithRecipeBook {
                 mc("sculk"), mc("recovery_compass"), mc("sculk")),
 
         recipe(ZenithCategory.WARDEN, "wardens_wrath", false,
-                mc("sculk_catalyst"), cz("warden_heart"), mc("sculk_catalyst"),
+                mc("sculk_catalyst"), mc("sculk_catalyst"), mc("sculk_catalyst"),
                 mc("sculk_sensor"), mc("netherite_sword"), mc("sculk_sensor"),
-                mc("deepslate_tiles"), cz("warden_heart"), mc("deepslate_tiles")),
+                mc("deepslate_tiles"), mc("sculk_catalyst"), mc("deepslate_tiles")),
 
         recipe(ZenithCategory.WARDEN, "warden_blade", true,
-                mc("echo_shard"), cz("warden_heart"), mc("echo_shard"),
+                mc("echo_shard"), mc("sculk_catalyst"), mc("echo_shard"),
                 cz("echo_blade"), mc("sculk_catalyst"), cz("wardens_wrath"),
-                mc("sculk_sensor"), cz("warden_heart"), mc("sculk_sensor")),
+                mc("sculk_sensor"), mc("sculk_catalyst"), mc("sculk_sensor")),
 
         // WITHER
         recipe(ZenithCategory.WITHER, "blade_of_fire", false,
                 mc("blaze_rod"), mc("wither_skeleton_skull"), mc("blaze_rod"),
-                cz("blazing_core"), mc("diamond_sword"), cz("blazing_core"),
-                mc("nether_bricks"), cz("withered_fragment"), mc("nether_bricks")),
+                mc("fire_charge"), mc("diamond_sword"), mc("fire_charge"),
+                mc("nether_bricks"), mc("wither_skeleton_skull"), mc("nether_bricks")),
 
         recipe(ZenithCategory.WITHER, "golden_desire", false,
-                mc("gold_block"), cz("brutes_emblem"), mc("gold_block"),
-                cz("piglin_sigil"), mc("golden_sword"), cz("piglin_sigil"),
+                mc("gold_block"), mc("gilded_blackstone"), mc("gold_block"),
+                mc("gold_ingot"), mc("diamond_sword"), mc("gold_ingot"),
                 mc("gilded_blackstone"), mc("ancient_debris"), mc("gilded_blackstone")),
 
         recipe(ZenithCategory.WITHER, "ghost_blade", false,
-                mc("ghast_tear"), cz("ghast_essence"), mc("ghast_tear"),
+                mc("ghast_tear"), mc("ghast_tear"), mc("ghast_tear"),
                 mc("soul_sand"), mc("diamond_sword"), mc("soul_sand"),
-                mc("soul_soil"), cz("ghast_essence"), mc("soul_soil")),
+                mc("soul_soil"), mc("ghast_tear"), mc("soul_soil")),
 
         recipe(ZenithCategory.WITHER, "wither_blade", true,
                 mc("wither_skeleton_skull"), mc("soul_sand"), mc("wither_skeleton_skull"),
@@ -185,19 +215,12 @@ public final class ZenithRecipeBook {
             String actual = "";
             ItemStack stack = grid.getItem(i);
 
-            String want = expected[i] == null ? "" : expected[i];
-
             if (!stack.isEmpty()) {
-                // Phase 1: Ender Essence is vanilla-backed and identified by built-in CUSTOM_DATA.
-                if ("chillzonezenith:ender_essence".equals(want)
-                        && ZenithStackIdentity.is(stack, "ender_essence")) {
-                    continue;
-                }
-
                 Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
                 actual = id == null ? "" : id.toString();
             }
 
+            String want = expected[i] == null ? "" : expected[i];
             if (!want.equals(actual)) return false;
         }
 

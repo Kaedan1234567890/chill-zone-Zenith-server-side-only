@@ -4,7 +4,6 @@ import com.chillzone.zenith.ZenithMod;
 import com.chillzone.zenith.progression.ZenithCategory;
 import com.chillzone.zenith.progression.ZenithProgressionState;
 import com.chillzone.zenith.item.ZenithTestMode;
-import com.chillzone.zenith.item.ZenithItems;
 import com.chillzone.zenith.crafting.ZenithRecipeBook;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -40,29 +39,42 @@ public final class ZenithCommands {
                 Commands.literal("zenith")
 
                     /*
-                     * PUBLIC PLAYER RECIPE GUIDE
-                     * Exact syntax:
-                     * /zenith crafting recipe <category> <weapon>
+                     * PUBLIC PLAYER RECIPE GUIDES
                      *
-                     * LuckPerms node:
+                     * /zenith craftingrecipe <category> <weapon>
+                     * /zenith craftingtable <category>
+                     *
+                     * Both use the existing public recipe permission:
                      * chillzonezenith.command.crafting.recipe
                      *
-                     * Fallback is TRUE so normal members can use the guide
-                     * even when no explicit LuckPerms rule exists.
+                     * Literal nodes are used so Java and Geyser/Bedrock clients
+                     * receive concrete autocomplete entries.
                      */
-                    .then(Commands.literal("crafting")
+                    .then(Commands.literal("craftingrecipe")
                         .requires(source -> hasPermission(
                                 source,
                                 "chillzonezenith.command.crafting.recipe",
                                 true
                         ))
-                        .then(Commands.literal("recipe")
-                            .requires(source -> hasPermission(
-                                    source,
-                                    "chillzonezenith.command.crafting.recipe",
-                                    true
-                            ))
-                            .then(recipeCategoryArgument())))
+                        .then(recipeCategoryLiteral(ZenithCategory.ENDER))
+                        .then(recipeCategoryLiteral(ZenithCategory.RAVAGER))
+                        .then(recipeCategoryLiteral(ZenithCategory.GUARDIAN))
+                        .then(recipeCategoryLiteral(ZenithCategory.WARDEN))
+                        .then(recipeCategoryLiteral(ZenithCategory.WITHER))
+                        .then(recipeCategoryLiteral(ZenithCategory.ZENITH)))
+
+                    .then(Commands.literal("craftingtable")
+                        .requires(source -> hasPermission(
+                                source,
+                                "chillzonezenith.command.crafting.recipe",
+                                true
+                        ))
+                        .then(tableCategoryLiteral(ZenithCategory.ENDER))
+                        .then(tableCategoryLiteral(ZenithCategory.RAVAGER))
+                        .then(tableCategoryLiteral(ZenithCategory.GUARDIAN))
+                        .then(tableCategoryLiteral(ZenithCategory.WARDEN))
+                        .then(tableCategoryLiteral(ZenithCategory.WITHER))
+                        .then(tableCategoryLiteral(ZenithCategory.ZENITH)))
 
                     /*
                      * ADMIN / MANAGEMENT COMMANDS
@@ -199,6 +211,26 @@ public final class ZenithCommands {
                                 ctx.getSource(),
                                 StringArgumentType.getString(ctx, "category")
                             ))))
+
+                    .then(permissionLiteral(
+                            "joinmessage",
+                            "chillzonezenith.command.joinmessage"
+                    )
+                        .then(Commands.literal("on")
+                            .executes(ctx -> setJoinMessage(ctx.getSource(), true)))
+                        .then(Commands.literal("off")
+                            .executes(ctx -> setJoinMessage(ctx.getSource(), false))))
+
+                    // Friendly alias: /zenith join message on|off
+                    .then(permissionLiteral(
+                            "join",
+                            "chillzonezenith.command.joinmessage"
+                    )
+                        .then(Commands.literal("message")
+                            .then(Commands.literal("on")
+                                .executes(ctx -> setJoinMessage(ctx.getSource(), true)))
+                            .then(Commands.literal("off")
+                                .executes(ctx -> setJoinMessage(ctx.getSource(), false)))))
             );
         });
     }
@@ -234,61 +266,34 @@ public final class ZenithCommands {
                 .requires(source -> hasPermission(source, node, false));
     }
 
-    private static com.mojang.brigadier.builder.RequiredArgumentBuilder<CommandSourceStack, String>
-    recipeCategoryArgument() {
-        return Commands.argument("category", StringArgumentType.word())
-                .suggests((ctx, builder) -> {
-                    ZenithProgressionState state =
-                            ZenithProgressionState.get(ctx.getSource().getServer());
+    private static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack>
+    recipeCategoryLiteral(ZenithCategory category) {
+        var categoryBuilder = Commands.literal(category.id());
 
-                    java.util.List<String> activeCategories = new java.util.ArrayList<>();
+        for (ZenithRecipeBook.RecipeDef recipe : ZenithRecipeBook.RECIPES) {
+            if (recipe.category() != category) continue;
 
-                    for (ZenithCategory category : ZenithCategory.values()) {
-                        if (state.isEnabled(category)) {
-                            activeCategories.add(category.id());
-                        }
-                    }
+            String weapon = pathOf(recipe.output());
+            categoryBuilder.then(
+                    Commands.literal(weapon)
+                            .executes(ctx -> showRecipe(
+                                    ctx.getSource(),
+                                    category.id(),
+                                    weapon
+                            ))
+            );
+        }
 
-                    return SharedSuggestionProvider.suggest(
-                            activeCategories,
-                            builder
-                    );
-                })
-                .then(Commands.argument("weapon", StringArgumentType.word())
-                        .suggests((ctx, builder) -> {
-                            ZenithCategory category = ZenithCategory.fromId(
-                                    StringArgumentType.getString(ctx, "category")
-                            ).orElse(null);
+        return categoryBuilder;
+    }
 
-                            if (category == null) {
-                                return builder.buildFuture();
-                            }
-
-                            ZenithProgressionState state =
-                                    ZenithProgressionState.get(ctx.getSource().getServer());
-
-                            if (!state.isEnabled(category)) {
-                                return builder.buildFuture();
-                            }
-
-                            java.util.List<String> weapons = new java.util.ArrayList<>();
-
-                            for (ZenithRecipeBook.RecipeDef recipe : ZenithRecipeBook.RECIPES) {
-                                if (recipe.category() == category) {
-                                    weapons.add(pathOf(recipe.output()));
-                                }
-                            }
-
-                            return SharedSuggestionProvider.suggest(
-                                    weapons,
-                                    builder
-                            );
-                        })
-                        .executes(ctx -> showRecipe(
-                                ctx.getSource(),
-                                StringArgumentType.getString(ctx, "category"),
-                                StringArgumentType.getString(ctx, "weapon")
-                        )));
+    private static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack>
+    tableCategoryLiteral(ZenithCategory category) {
+        return Commands.literal(category.id())
+                .executes(ctx -> showCraftingTableRecipe(
+                        ctx.getSource(),
+                        category.id()
+                ));
     }
 
     private static com.mojang.brigadier.builder.RequiredArgumentBuilder<CommandSourceStack, String>
@@ -307,6 +312,76 @@ public final class ZenithCommands {
                 ));
     }
 
+
+    private static int setJoinMessage(
+            CommandSourceStack source,
+            boolean enabled
+    ) {
+        ZenithProgressionState state =
+                ZenithProgressionState.get(source.getServer());
+
+        state.setJoinMessageEnabled(enabled);
+
+        source.sendSuccess(
+                () -> Component.literal(
+                        "[Zenith] Join message is now "
+                                + (enabled ? "ON." : "OFF.")
+                ).withStyle(enabled ? ChatFormatting.GREEN : ChatFormatting.YELLOW),
+                false
+        );
+
+        return 1;
+    }
+
+    private static int showCraftingTableRecipe(
+            CommandSourceStack source,
+            String rawCategory
+    ) {
+        ZenithCategory category = ZenithCategory.fromId(rawCategory).orElse(null);
+
+        if (category == null) {
+            source.sendFailure(
+                    Component.literal("[Zenith] Unknown crafting table category: " + rawCategory)
+            );
+            return 0;
+        }
+
+        ZenithProgressionState state =
+                ZenithProgressionState.get(source.getServer());
+
+        if (!state.isEnabled(category)) {
+            source.sendFailure(
+                    Component.literal(
+                            "[Zenith] The " + category.id()
+                                    + " branch is not currently active."
+                    )
+            );
+            return 0;
+        }
+
+        ZenithRecipeBook.RecipeDef found = null;
+
+        for (ZenithRecipeBook.RecipeDef recipe : ZenithRecipeBook.TABLE_RECIPES) {
+            if (recipe.category() == category) {
+                found = recipe;
+                break;
+            }
+        }
+
+        if (found == null) {
+            source.sendFailure(
+                    Component.literal("[Zenith] No crafting table recipe found.")
+            );
+            return 0;
+        }
+
+        return displayRecipe(
+                source,
+                found,
+                "Regular Crafting Table",
+                "CRAFTING TABLE RECIPE"
+        );
+    }
 
     private static int showRecipe(
             CommandSourceStack source,
@@ -464,11 +539,108 @@ public final class ZenithCommands {
 
         source.sendSuccess(
                 () -> Component.literal(
-                                "Tip: /zenith crafting recipe "
+                                "Tip: /zenith craftingrecipe "
                                         + category.id()
                                         + " <weapon>"
                         )
                         .withStyle(ChatFormatting.DARK_GRAY),
+                false
+        );
+
+        return 1;
+    }
+
+    private static int displayRecipe(
+            CommandSourceStack source,
+            ZenithRecipeBook.RecipeDef recipe,
+            String stationName,
+            String label
+    ) {
+        ZenithCategory category = recipe.category();
+        ChatFormatting branchColor = categoryColor(category);
+        String outputName = prettyItemName(recipe.output());
+
+        source.sendSuccess(
+                () -> Component.literal("================================")
+                        .withStyle(ChatFormatting.DARK_GRAY),
+                false
+        );
+
+        source.sendSuccess(
+                () -> Component.literal("  " + outputName)
+                        .withStyle(style ->
+                                style.withColor(branchColor).withBold(true)
+                        ),
+                false
+        );
+
+        source.sendSuccess(
+                () -> Component.literal(label)
+                        .withStyle(style ->
+                                style.withColor(branchColor).withBold(true)
+                        ),
+                false
+        );
+
+        source.sendSuccess(
+                () -> Component.literal("Station: " + stationName)
+                        .withStyle(ChatFormatting.GRAY),
+                false
+        );
+
+        source.sendSuccess(
+                () -> Component.literal("+--------- 3 x 3 CRAFTING GRID ---------+")
+                        .withStyle(ChatFormatting.DARK_GRAY),
+                false
+        );
+
+        String[] grid = recipe.grid();
+
+        for (int row = 0; row < 3; row++) {
+            int first = row * 3;
+            String rowText =
+                    "[ " + prettyItemName(grid[first]) + " ]"
+                            + "  [ " + prettyItemName(grid[first + 1]) + " ]"
+                            + "  [ " + prettyItemName(grid[first + 2]) + " ]";
+
+            source.sendSuccess(
+                    () -> Component.literal(rowText)
+                            .withStyle(ChatFormatting.WHITE),
+                    false
+            );
+        }
+
+        source.sendSuccess(
+                () -> Component.literal("+---------------------------------------+")
+                        .withStyle(ChatFormatting.DARK_GRAY),
+                false
+        );
+
+        Map<String, Integer> totals = new LinkedHashMap<>();
+
+        for (String ingredient : grid) {
+            String name = prettyItemName(ingredient);
+            totals.put(name, totals.getOrDefault(name, 0) + 1);
+        }
+
+        StringBuilder needed = new StringBuilder("Needed: ");
+        boolean firstIngredient = true;
+
+        for (Map.Entry<String, Integer> entry : totals.entrySet()) {
+            if (!firstIngredient) {
+                needed.append(" | ");
+            }
+
+            needed.append(entry.getValue())
+                    .append("x ")
+                    .append(entry.getKey());
+
+            firstIngredient = false;
+        }
+
+        source.sendSuccess(
+                () -> Component.literal(needed.toString())
+                        .withStyle(ChatFormatting.GRAY),
                 false
         );
 
@@ -549,12 +721,6 @@ public final class ZenithCommands {
             }
         });
 
-        // Vanilla-backed Zenith items are not present in our registry namespace,
-        // so add their logical IDs explicitly.
-        if (!ids.contains("ender_essence")) {
-            ids.add("ender_essence");
-        }
-
         ids.sort(String::compareTo);
         return ids;
     }
@@ -567,21 +733,16 @@ public final class ZenithCommands {
     ) {
         Identifier id = Identifier.fromNamespaceAndPath(ZenithMod.MOD_ID, shortId);
 
-        // Phase 1: Ender Essence is a vanilla-backed ItemStack with hidden Zenith identity.
-        boolean enderEssence = "ender_essence".equals(shortId);
-
-        if (!enderEssence && !BuiltInRegistries.ITEM.containsKey(id)) {
+        if (!BuiltInRegistries.ITEM.containsKey(id)) {
             source.sendFailure(Component.literal("[Zenith] Unknown custom item: " + shortId));
             return 0;
         }
 
-        Item item = enderEssence ? null : BuiltInRegistries.ITEM.getValue(id);
+        Item item = BuiltInRegistries.ITEM.getValue(id);
         int count = 0;
 
         for (ServerPlayer player : targets) {
-            ItemStack stack = enderEssence
-                    ? ZenithItems.createEnderEssence(amount)
-                    : new ItemStack(item, amount);
+            ItemStack stack = new ItemStack(item, amount);
 
             if (!player.getInventory().add(stack)) {
                 player.drop(stack, false);

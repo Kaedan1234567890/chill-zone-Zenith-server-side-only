@@ -1,0 +1,26 @@
+ZENITH SERVER-SIDE POLYMER CONVERSION v1
+
+Changes:
+- all 18 custom swords remain real chillzonezenith items on the server
+- Polymer sends vanilla-safe sword representations to unmodded Java clients
+- each sword keeps its own ITEM_MODEL id for its own texture/model
+- normal vanilla swords are not modified
+- all six custom crafting tables remain real custom server blocks
+- Polymer sends vanilla-safe allocated block states to unmodded Java clients
+- crafting-table item forms are represented as vanilla Crafting Tables
+- Zenith models/textures are added to Polymer's generated resource pack
+- the custom vanilla CreativeModeTab registry entry was removed
+- Ravager crafting-table recipe now uses minecraft:goat_horn
+- Sword of Undying now gives exactly 8 absorption hearts for 8 seconds
+  using Absorption IV (amplifier 3)
+
+Testing:
+1. Run GitHub Actions.
+2. If it compiles, install the built server jar.
+3. Start server once.
+4. If the resource pack is not offered, edit config/polymer/auto-host.json,
+   set enabled to true, then restart.
+5. Join from a Java client with NO Zenith mod installed.
+
+Do not call this server-side conversion confirmed until that real join test passes.
+Bedrock/Geyser visual mappings are a separate later step.

@@ -1,0 +1,21 @@
+POLYMER GRADLE FIX v2
+
+GitHub Actions error:
+  Could not find method modImplementation()
+
+Cause:
+  This Minecraft 26.2 / Loom 1.17 project uses the newer plain
+  implementation configuration. modImplementation is not available here.
+
+Fix:
+  Replaced each Polymer dependency declaration from:
+    modImplementation include("group:artifact:version")
+
+  to the same dependency style already used successfully by this project:
+    include(implementation("group:artifact:version"))
+
+Polymer version remains:
+  0.17.4+26.2
+
+No gameplay logic, recipes, sword abilities, textures, crafting tables,
+permissions, or absorption-heart settings were intentionally changed.

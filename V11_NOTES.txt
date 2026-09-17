@@ -1,0 +1,31 @@
+ZENITH v11
+
+Command cleanup:
+- Removed: /zenith crafting recipe <category> <weapon>
+- New:     /zenith craftingrecipe <category> <weapon>
+- New:     /zenith craftingtable <category>
+
+Examples:
+- /zenith craftingrecipe ravager mansion_blade
+- /zenith craftingtable ravager
+
+The same public LuckPerms permission is used:
+chillzonezenith.command.crafting.recipe
+
+Join message:
+- shows which Zenith branches are currently active
+- shows the new craftingrecipe command
+- shows the new craftingtable command
+- existing joinmessage on/off system remains
+
+Crafting-table recipe command shows the exact 3x3 recipe for:
+- Ender Crafting Table
+- Ravager Crafting Table
+- Guardian Crafting Table
+- Warden Crafting Table
+- Wither Crafting Table
+- Zenith Crafting Table
+
+Bedrock/Geyser:
+- command category and weapon choices remain literal command-tree nodes for
+  better autocomplete support.

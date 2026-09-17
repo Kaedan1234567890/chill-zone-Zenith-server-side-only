@@ -2,9 +2,13 @@ package com.chillzone.zenith.item;
 
 import com.chillzone.zenith.progression.ZenithCategory;
 import com.chillzone.zenith.progression.ZenithProgressionState;
+import eu.pb4.polymer.core.api.item.PolymerItem;
+import net.fabricmc.fabric.api.networking.v1.context.PacketContext;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -25,22 +29,38 @@ import net.minecraft.sounds.SoundSource;
 import java.util.List;
 import java.util.Set;
 
-public class AbilitySwordItem extends Item {
+public class AbilitySwordItem extends Item implements PolymerItem {
 
     private final ZenithAbility ability;
     private final ZenithCategory category;
     private final boolean uniqueBoss;
+    private final Item polymerBaseItem;
 
     public AbilitySwordItem(
             Properties properties,
             ZenithAbility ability,
             ZenithCategory category,
-            boolean uniqueBoss
+            boolean uniqueBoss,
+            Item polymerBaseItem
     ) {
         super(properties);
         this.ability = ability;
         this.category = category;
         this.uniqueBoss = uniqueBoss;
+        this.polymerBaseItem = polymerBaseItem;
+    }
+
+    @Override
+    public Item getPolymerItem(ItemStack itemStack, PacketContext context) {
+        return this.polymerBaseItem;
+    }
+
+    @Override
+    public Identifier getPolymerItemModel(ItemStack stack, PacketContext context, HolderLookup.Provider lookup) {
+        // null tells Polymer to use the vanilla base item's own model instead of
+        // the custom Zenith registry item's model id. This is required for
+        // unmodded clients when we intentionally use vanilla visuals only.
+        return null;
     }
 
     @Override
@@ -130,8 +150,9 @@ public class AbilitySwordItem extends Item {
             }
 
             case LAST_STAND -> {
-                // Absorption VIII for 8 seconds: strong protection, no direct damage.
-                user.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 160, 7));
+                // Exactly 8 absorption hearts for 8 seconds.
+                // Absorption IV = 16 absorption health points = 8 hearts.
+                user.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 160, 3));
                 play(level, user, SoundEvents.TOTEM_USE, 0.8F, 1.2F);
             }
             case VEX_CALL -> {
@@ -148,8 +169,8 @@ public class AbilitySwordItem extends Item {
                 user.setDeltaMovement(look.x, 0.35, look.z);
                 user.hurtMarked = true;
                 blast(level, user, 3.0, 10.0F, 2.2);
-                user.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 200, 2));
-                user.addEffect(new MobEffectInstance(MobEffects.SPEED, 200, 2));
+                user.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 100, 2));
+                user.addEffect(new MobEffectInstance(MobEffects.SPEED, 100, 2));
                 play(level, user, SoundEvents.RAVAGER_ROAR, 1.0F, 1.1F);
             }
 

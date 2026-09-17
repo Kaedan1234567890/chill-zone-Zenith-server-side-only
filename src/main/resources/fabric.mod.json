@@ -7,7 +7,7 @@
   "authors": [
     "Chill Zone"
   ],
-  "environment": "server",
+  "environment": "*",
   "entrypoints": {
     "main": [
       "com.chillzone.zenith.ZenithMod"

@@ -1,0 +1,34 @@
+ZENITH VANILLA INGREDIENT RESET
+
+Baseline: user's uploaded build(2).zip (Fix 33 era).
+
+Removed custom crafting-material item registrations:
+Ender Essence, Shulker Essence, Ravager Horn, Ravager Heart, Mansion Key,
+Guardian Scale, Elder Guardian Core, Warden Heart, Blazing Core,
+Withered Fragment, Piglin Sigil, Brute's Emblem, Ghast Essence.
+
+Approved replacements:
+Ender Essence -> Eye of Ender
+Shulker Essence -> Shulker Shell
+Ravager Horn -> Goat Horn
+Ravager Heart -> Totem of Undying
+Mansion Key -> Ominous Trial Key
+Guardian Scale -> Prismarine Shard
+Elder Guardian Core -> Heart of the Sea
+Warden Heart -> Sculk Catalyst
+Blazing Core -> Fire Charge
+Withered Fragment -> Wither Skeleton Skull
+Piglin Sigil -> Gold Ingot
+Brute's Emblem -> Gilded Blackstone
+Ghast Essence -> Ghast Tear
+
+The recipe guide reads ZenithRecipeBook.RECIPES, so it automatically shows
+these same new vanilla ingredients.
+
+The existing branch-gated bonus mob-drop chances were retained, but they now
+spawn the corresponding vanilla item instead of a custom registered material.
+
+This does NOT yet make the entire mod server-side-only. The custom swords and
+custom crafting-table blocks still need their separate vanilla-backed
+conversion. This reset removes the failed custom-material direction and is the
+new baseline for that work.

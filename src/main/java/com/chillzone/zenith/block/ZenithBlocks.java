@@ -10,8 +10,10 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 
 public final class ZenithBlocks {
     private ZenithBlocks() {}
@@ -20,18 +22,20 @@ public final class ZenithBlocks {
         Identifier id = Identifier.fromNamespaceAndPath(ZenithMod.MOD_ID, name);
         ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, id);
         ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, id);
+        BlockState clientState = Blocks.CRAFTING_TABLE.defaultBlockState();
 
         Block block = new ZenithCraftingTableBlock(
                 BlockBehaviour.Properties.of()
                         .strength(2.5F)
                         .sound(SoundType.WOOD)
                         .setId(blockKey),
-                category
+                category,
+                clientState
         );
 
         Registry.register(BuiltInRegistries.BLOCK, blockKey, block);
 
-        BlockItem blockItem = new BlockItem(
+        BlockItem blockItem = new ZenithCraftingTableItem(
                 block,
                 new Item.Properties()
                         .useBlockDescriptionPrefix()

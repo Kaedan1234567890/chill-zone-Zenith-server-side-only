@@ -1,0 +1,25 @@
+ZENITH v8 - RECIPE + TABLE NAME UPDATE
+
+Recipe changes:
+- Ender Blade top corners: End Rods
+- Ender Blade bottom middle: Blaze Rod
+- Shulker Blade top corners: End Rods
+- Shulker Blade bottom middle: End Crystal
+- Mansion Blade bottom corners: Dark Oak Trapdoors
+- Wither Crafting Table bottom middle: Wither Skeleton Skull
+- Golden Desire center weapon: Diamond Sword
+
+Crafting-table item names:
+- Ender Crafting Table
+- Ravager Crafting Table
+- Guardian Crafting Table
+- Warden Crafting Table
+- Wither Crafting Table
+- Zenith Crafting Table
+
+The recipe-guide command automatically reads the same hardcoded sword recipes,
+so its displayed grids will reflect these changes.
+
+The custom tables use a server-side custom crafting system rather than normal
+vanilla recipe-book recipes, so this build does not attempt to force those
+recipes into the vanilla recipe book on an unmodded client.

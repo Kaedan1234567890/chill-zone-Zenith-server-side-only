@@ -1,0 +1,14 @@
+ZENITH v9
+
+Keeps every v8 recipe change.
+
+Removed:
+- the extra crafting-table custom display-name work from v8
+- no automatic recipe unlocking/display was added
+
+Added:
+- private Zenith info message every time a player joins
+- shows the exact recipe command
+- explains one legitimate Boss Blade per branch
+- explains the five Boss Blades lead to the Zenith Blade
+- points players to /discord for help

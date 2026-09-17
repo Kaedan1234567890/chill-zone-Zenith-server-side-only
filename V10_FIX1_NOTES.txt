@@ -1,0 +1,1 @@
+V10 Fix1: adds the missing join-message getter/setter that caused the GitHub Actions compile failure. No gameplay or recipe changes.

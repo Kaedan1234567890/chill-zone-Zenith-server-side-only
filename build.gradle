@@ -12,6 +12,7 @@ base {
 
 repositories {
     mavenCentral()
+    maven { url 'https://maven.nucleoid.xyz/' }
 }
 
 dependencies {
@@ -24,6 +25,12 @@ dependencies {
 
     // LuckPerms-compatible permission bridge (bundled inside this mod jar).
     include(implementation("me.lucko:fabric-permissions-api:0.7.0"))
+
+    // Server-side custom-content bridge for unmodded Java clients.
+    include(implementation("eu.pb4:polymer-core:0.17.4+26.2"))
+    include(implementation("eu.pb4:polymer-resource-pack:0.17.4+26.2"))
+    include(implementation("eu.pb4:polymer-blocks:0.17.4+26.2"))
+    include(implementation("eu.pb4:polymer-autohost:0.17.4+26.2"))
 }
 
 processResources {

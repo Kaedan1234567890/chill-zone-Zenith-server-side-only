@@ -1,0 +1,29 @@
+ZENITH v10
+
+New commands:
+  /zenith joinmessage on
+  /zenith joinmessage off
+
+Alias:
+  /zenith join message on
+  /zenith join message off
+
+LuckPerms node:
+  chillzonezenith.command.joinmessage
+
+The join-message setting is saved in the world and survives restarts.
+Old worlds default to join message ON.
+
+Bedrock/Geyser autocomplete:
+The public recipe guide now uses literal category and weapon nodes in the
+Brigadier command tree instead of dynamic suggestion callbacks. This gives
+Geyser concrete command-tree entries to send to Bedrock clients.
+
+IMPORTANT:
+Geyser must also have:
+  command-suggestions: true
+in its config. If that setting is false, no mod-side command change can make
+Bedrock show suggestions.
+
+All v9 gameplay, recipes, visuals, abilities, permissions, and server-side-only
+behavior are otherwise retained.
