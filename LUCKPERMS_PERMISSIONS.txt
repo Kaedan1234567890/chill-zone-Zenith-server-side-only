@@ -1,0 +1,49 @@
+CHILL ZONE ZENITH - LUCKPERMS PERMISSION NODES
+================================================
+
+PLAYER RECIPE GUIDE (public fallback)
+-------------------------------------
+chillzonezenith.command.crafting.recipe
+Command:
+  /zenith crafting recipe <category> <weapon>
+
+This one defaults to AVAILABLE for normal players.
+LuckPerms can explicitly deny it to any group/player.
+
+ADMIN / MANAGEMENT (OP fallback)
+--------------------------------
+chillzonezenith.command.status
+chillzonezenith.command.test.self
+chillzonezenith.command.test.targets
+chillzonezenith.command.test.all
+chillzonezenith.command.untest.self
+chillzonezenith.command.untest.targets
+chillzonezenith.command.untest.all
+chillzonezenith.command.activate
+chillzonezenith.command.deactivate
+chillzonezenith.command.activateall
+chillzonezenith.command.deactivateall
+chillzonezenith.command.give
+chillzonezenith.command.detect
+chillzonezenith.command.resetboss
+
+These default to vanilla operator/gamemaster access when LuckPerms
+does not explicitly set the node.
+
+EXAMPLE GROUP SETUP
+-------------------
+Members:
+  /lp group members permission set chillzonezenith.command.crafting.recipe true
+
+Mods (example):
+  /lp group mod permission set chillzonezenith.command.status true
+  /lp group mod permission set chillzonezenith.command.detect true
+
+Admins (example):
+  /lp group admin permission set chillzonezenith.command.* true
+
+Owners (example):
+  /lp group owner permission set chillzonezenith.command.* true
+
+You can override ANY individual node with true/false for owner, admin,
+mod, members, or an individual player.

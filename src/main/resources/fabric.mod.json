@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "chillzonezenith",
+  "version": "${version}",
+  "name": "Chill Zone Zenith",
+  "description": "Zenith progression system for the Chill Zone SMP.",
+  "authors": [
+    "Chill Zone"
+  ],
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.chillzone.zenith.ZenithMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "fabric-api": "*",
+    "minecraft": "26.2",
+    "java": ">=25",
+    "fabric-permissions-api-v0": "*"
+  }
+}

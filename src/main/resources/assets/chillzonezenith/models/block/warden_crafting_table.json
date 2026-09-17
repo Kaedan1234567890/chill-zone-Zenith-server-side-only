@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "chillzonezenith:block/warden_crafting_table_side",
+    "down": "chillzonezenith:block/warden_crafting_table_side",
+    "up": "chillzonezenith:block/warden_crafting_table_top",
+    "north": "chillzonezenith:block/warden_crafting_table_front",
+    "south": "chillzonezenith:block/warden_crafting_table_side",
+    "west": "chillzonezenith:block/warden_crafting_table_side",
+    "east": "chillzonezenith:block/warden_crafting_table_side"
+  }
+}

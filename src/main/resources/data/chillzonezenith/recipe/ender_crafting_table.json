@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "AEA",
+    "ECE",
+    "AEA"
+  ],
+  "key": {
+    "A": "minecraft:end_rod",
+    "E": "minecraft:ender_eye",
+    "C": "minecraft:crafting_table"
+  },
+  "result": {
+    "count": 1,
+    "id": "chillzonezenith:ender_crafting_table"
+  }
+}

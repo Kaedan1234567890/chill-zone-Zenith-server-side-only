@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "chillzonezenith:block/wither_crafting_table_side",
+    "down": "chillzonezenith:block/wither_crafting_table_side",
+    "up": "chillzonezenith:block/wither_crafting_table_top",
+    "north": "chillzonezenith:block/wither_crafting_table_front",
+    "south": "chillzonezenith:block/wither_crafting_table_side",
+    "west": "chillzonezenith:block/wither_crafting_table_side",
+    "east": "chillzonezenith:block/wither_crafting_table_side"
+  }
+}

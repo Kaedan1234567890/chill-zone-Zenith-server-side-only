@@ -1,0 +1,55 @@
+ZENITH SERVER-SIDE CONVERSION — PHASE 1
+=========================================
+
+GOAL
+----
+Begin converting Zenith away from custom item/block registry entries so the
+finished mod can be installed ONLY on the server.
+
+PHASE 1 CONVERTED
+-----------------
+Ender Essence only.
+
+OLD:
+  chillzonezenith:ender_essence (new registered item)
+
+NEW:
+  minecraft:amethyst_shard (vanilla base)
+  + minecraft:custom_data {chillzonezenith_id:"ender_essence"}
+  + custom visible name "Ender Essence"
+
+The identity is stored using Minecraft's BUILT-IN CUSTOM_DATA component.
+This phase intentionally DOES NOT register a custom DataComponentType.
+
+PRESERVED
+---------
+- Enderman 12% Ender Essence drop
+- Ender Essence is still required by the Ender Blade recipe
+- Ordinary Amethyst Shards DO NOT count as Ender Essence
+- Renaming an Amethyst Shard to "Ender Essence" DOES NOT make it valid
+- /zenith give ... ender_essence ... still has a logical entry and creates
+  the marked stack
+- Existing Fix 33 systems are otherwise preserved
+
+IMPORTANT TEST EXPECTATION
+--------------------------
+THIS PHASE ALONE WILL NOT YET LET A VANILLA CLIENT JOIN.
+
+The rest of the Zenith custom swords, materials, and blocks are still registered
+in this transitional build. The unknown-registry disconnect can only disappear
+after ALL client-visible custom registry entries have been converted.
+
+This is deliberately a small first conversion so GitHub Actions can validate
+the Minecraft 26.2 API before the same pattern is applied across the mod.
+
+TEXTURES
+--------
+The existing Java texture files are retained in source. Ender Essence's custom
+visual will be wired into the Java resource-pack stage after the vanilla-backed
+identity path is proven. The underlying gameplay identity does not depend on
+the visible name or texture.
+
+PROJECT RULE GOING FORWARD
+--------------------------
+Chill Zone gameplay mods are to be designed server-side-only by default:
+players must not need to install the Fabric gameplay mod on their clients.

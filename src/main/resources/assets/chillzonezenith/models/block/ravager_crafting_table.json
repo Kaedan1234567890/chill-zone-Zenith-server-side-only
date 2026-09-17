@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "chillzonezenith:block/ravager_crafting_table_side",
+    "down": "chillzonezenith:block/ravager_crafting_table_side",
+    "up": "chillzonezenith:block/ravager_crafting_table_top",
+    "north": "chillzonezenith:block/ravager_crafting_table_front",
+    "south": "chillzonezenith:block/ravager_crafting_table_side",
+    "west": "chillzonezenith:block/ravager_crafting_table_side",
+    "east": "chillzonezenith:block/ravager_crafting_table_side"
+  }
+}

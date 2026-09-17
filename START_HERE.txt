@@ -1,0 +1,67 @@
+CHILL ZONE ZENITH - FIX 19
+MOB DROP FIX
+
+This is the SAME mod moving forward from Fix 18.
+
+THE PROBLEM
+===========
+The custom materials existed, and ZenithGate already had a canDrop() check,
+but no death event was actually registered to create the custom mob drops.
+
+FIX 19
+======
+Adds a server-side Fabric AFTER_DEATH listener and spawns the matching custom
+material IN ADDITION TO normal vanilla loot.
+
+The drops only roll while their branch is ACTIVATED.
+
+CURRENT DROP TABLE
+==================
+ENDER
+- Enderman -> Ender Essence: 12%
+- Shulker -> Shulker Essence: 25%
+
+RAVAGER
+- Ravager -> Ravager Horn: 35%
+- Ravager -> Ravager Heart: 20%
+- Evoker -> Mansion Key: 100% (testing implementation)
+
+GUARDIAN
+- Guardian -> Guardian Scale: 10%
+- Elder Guardian -> Elder Guardian Core: 100%
+
+WARDEN
+- Warden -> Warden Heart: 100%
+
+WITHER / NETHER
+- Blaze -> Blazing Core: 15%
+- Wither Skeleton -> Withered Fragment: 12%
+- Piglin -> Piglin Sigil: 8%
+- Piglin Brute -> Brute's Emblem: 100%
+- Ghast -> Ghast Essence: 15%
+
+IMPORTANT
+=========
+Mansion Key is currently guaranteed from an Evoker while the Ravager branch is
+active so you can test the progression immediately. The stricter original rule
+(first qualifying Evoker in/near a Woodland Mansion) can be added after the
+basic drop system is confirmed working.
+
+ACTIVATION TEST
+===============
+1. /zenith activate ender
+2. Kill Endermen until Ender Essence drops (12% each kill).
+3. /zenith deactivate ender
+4. Kill more Endermen. Ender Essence should NOT drop while disabled.
+
+100% TESTS
+==========
+For a fast proof that the listener works:
+- activate guardian and kill an Elder Guardian
+- activate warden and kill a Warden
+- activate wither and kill a Piglin Brute
+Those custom drops are currently guaranteed.
+
+UPLOAD
+======
+Extract -> upload EVERYTHING INSIDE -> overwrite -> Commit -> Actions.

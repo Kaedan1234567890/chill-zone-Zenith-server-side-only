@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "chillzonezenith:item/piglin_sigil"
+  }
+}

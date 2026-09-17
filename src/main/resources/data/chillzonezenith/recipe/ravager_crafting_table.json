@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ETE",
+    "DCD",
+    "HRH"
+  ],
+  "key": {
+    "E": "minecraft:emerald_block",
+    "T": "minecraft:totem_of_undying",
+    "D": "minecraft:dark_oak_planks",
+    "C": "minecraft:crafting_table",
+    "H": "minecraft:crossbow",
+    "R": "chillzonezenith:ravager_horn"
+  },
+  "result": {
+    "count": 1,
+    "id": "chillzonezenith:ravager_crafting_table"
+  }
+}

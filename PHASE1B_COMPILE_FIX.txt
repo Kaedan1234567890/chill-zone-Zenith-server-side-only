@@ -1,0 +1,15 @@
+PHASE 1B COMPILE FIX
+
+GitHub Actions reported:
+  ZenithCommands.java: cannot find symbol
+  ZenithItems.createEnderEssence(amount)
+
+Cause:
+  ZenithCommands referenced ZenithItems after the Phase 1 conversion but the
+  ZenithItems import was missing.
+
+Fix:
+  Added:
+    import com.chillzone.zenith.item.ZenithItems;
+
+No gameplay or server-side conversion behaviour was otherwise changed.

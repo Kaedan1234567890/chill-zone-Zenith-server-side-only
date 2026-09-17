@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ECE",
+    "STS",
+    "ECE"
+  ],
+  "key": {
+    "E": "minecraft:echo_shard",
+    "C": "minecraft:sculk_catalyst",
+    "S": "minecraft:sculk_sensor",
+    "T": "minecraft:crafting_table"
+  },
+  "result": {
+    "count": 1,
+    "id": "chillzonezenith:warden_crafting_table"
+  }
+}
