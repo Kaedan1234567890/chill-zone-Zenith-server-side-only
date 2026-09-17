@@ -1,0 +1,18 @@
+SERVER-ONLY VERIFICATION
+
+This source package is explicitly marked:
+  "environment": "server"
+
+in src/main/resources/fabric.mod.json.
+
+That means the Zenith mod is intended to load on the server only.
+Players do NOT need to install the Zenith mod on their clients.
+
+Included requested changes:
+- Ravager/Avenger Blade Strength III + Speed III: 10 seconds (200 ticks)
+- Join status reports Boss Blade: CRAFTED / NOT CRAFTED from saved progression state
+
+Build requirement:
+- Minecraft 26.2
+- Java 25
+- Fabric Loader / Fabric API as specified by the project
