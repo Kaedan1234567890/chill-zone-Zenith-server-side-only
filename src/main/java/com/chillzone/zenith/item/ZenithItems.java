@@ -176,7 +176,7 @@ public final class ZenithItems {
             case DRAGON_WARP -> "Moving: 12-block damaging leap. Standing: breath burst, then retreat.";
             case LAST_STAND -> "Gain exactly 8 absorption hearts for 8 seconds.";
             case VEX_CALL -> "Gain Speed III + Strength III for 8 seconds.";
-            case RAVAGER_CHARGE -> "Ram forward, then gain Speed III + Strength III for 5 seconds.";
+            case RAVAGER_CHARGE -> "Ram forward, then gain Speed III + Strength III for 10 seconds.";
             case GUARDIAN_RAY -> "Hit your aimed target with Mining Fatigue for 10 seconds.";
             case TIDAL_BURST -> "Push nearby enemies away with a non-damaging wave.";
             case ELDER_CURSE -> "Nearby enemies in water immediately lose their air.";

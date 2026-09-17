@@ -38,7 +38,10 @@ public final class ZenithJoinMessage {
                 if (state.isEnabled(category)) {
                     String name = category.id().substring(0, 1).toUpperCase()
                             + category.id().substring(1);
-                    activeBranches.add(name);
+                    String bossStatus = state.isBossCrafted(category)
+                            ? "Boss Blade: CRAFTED"
+                            : "Boss Blade: NOT CRAFTED";
+                    activeBranches.add(name + " (" + bossStatus + ")");
                 }
             }
 

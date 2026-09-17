@@ -169,8 +169,8 @@ public class AbilitySwordItem extends Item implements PolymerItem {
                 user.setDeltaMovement(look.x, 0.35, look.z);
                 user.hurtMarked = true;
                 blast(level, user, 3.0, 10.0F, 2.2);
-                user.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 100, 2));
-                user.addEffect(new MobEffectInstance(MobEffects.SPEED, 100, 2));
+                user.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 200, 2));
+                user.addEffect(new MobEffectInstance(MobEffects.SPEED, 200, 2));
                 play(level, user, SoundEvents.RAVAGER_ROAR, 1.0F, 1.1F);
             }
 

@@ -1,0 +1,28 @@
+ZENITH v11 BALANCE 1 — SERVER-SIDE UPDATE
+
+BASE:
+- Built directly from chill-zone-Zenith-v11-Recipe-Commands-Active-Branches.
+- Preserves the v11 Polymer server-side architecture.
+
+CHANGES:
+1. Ravager Blade / Ravager Charge
+   - Strength III: 100 -> 200 ticks (5 -> 10 seconds)
+   - Speed III: 100 -> 200 ticks (5 -> 10 seconds)
+   - Ability description updated to 10 seconds.
+
+2. Existing join message
+   - Active branches now display the saved one-time Boss Blade state.
+   - Example: Ravager (Boss Blade: CRAFTED)
+   - Example: Ender (Boss Blade: NOT CRAFTED)
+   - Uses ZenithProgressionState.isBossCrafted(category), so it is not hard-coded.
+
+SERVER-SIDE VERIFICATION:
+- This is the actual v11 Polymer-based project, not the older 0.6.2 conversion.
+- AbilitySwordItem implements PolymerItem.
+- ZenithCraftingTableBlock implements PolymerBlock.
+- Polymer core/resource-pack/blocks/autohost are bundled by build.gradle.
+- The existing v11 server-side design is preserved; no client-side Zenith code was added.
+- Intended test: vanilla Java client joins with NO Zenith mod installed, as specified by the original v11 project notes.
+
+VERSION:
+0.11.0-alpha-balance1-server-side
