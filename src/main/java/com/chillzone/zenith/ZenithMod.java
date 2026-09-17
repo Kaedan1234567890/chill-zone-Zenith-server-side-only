@@ -18,6 +18,7 @@ public final class ZenithMod implements ModInitializer {
         ZenithCreativeTabExtras.initialize();
         ZenithAbilityScheduler.initialize();
         ZenithCommands.register();
+        ZenithJoinStatus.initialize();
         ZenithMobDrops.initialize();
     }
 }
