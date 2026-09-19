@@ -37,6 +37,9 @@ public final class ZenithProgressionState extends SavedData {
     // Bit 16 stores DISABLED instead of enabled so old worlds default to ON.
     private boolean joinMessageEnabled = true;
 
+    // Bit 17 stores whether travel into The End is locked. Old saves default to unlocked.
+    private boolean endLocked = false;
+
     public ZenithProgressionState() {
         for (ZenithCategory category : ZenithCategory.values()) {
             enabled.put(category, false);
@@ -55,6 +58,7 @@ public final class ZenithProgressionState extends SavedData {
 
         // Old saves have this bit unset, which correctly means enabled.
         joinMessageEnabled = (packed & (1 << 16)) == 0;
+        endLocked = (packed & (1 << 17)) != 0;
     }
 
     private int toPackedInt() {
@@ -67,6 +71,7 @@ public final class ZenithProgressionState extends SavedData {
         }
 
         if (!joinMessageEnabled) packed |= (1 << 16);
+        if (endLocked) packed |= (1 << 17);
 
         return packed;
     }
@@ -111,6 +116,13 @@ public final class ZenithProgressionState extends SavedData {
 
     public void setJoinMessageEnabled(boolean enabled) {
         this.joinMessageEnabled = enabled;
+        setDirty();
+    }
+
+    public boolean isEndLocked() { return endLocked; }
+
+    public void setEndLocked(boolean locked) {
+        this.endLocked = locked;
         setDirty();
     }
 

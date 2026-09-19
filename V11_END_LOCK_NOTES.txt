@@ -1,0 +1,11 @@
+v11 Balance1 + End Lock
+
+/end lock - blocks players entering The End without changing portal blocks.
+/end unlock - allows normal End travel; does NOT activate/light any portal.
+Unlock broadcasts: THE END IS OPEN! / Good luck. Get the egg.
+Lock broadcasts: THE END IS CLOSED!
+State persists in ZenithProgressionState (bit 17).
+Permission: chillzonezenith.command.end (strict default false).
+Grant owner: /lp group owner permission set chillzonezenith.command.end true
+
+Existing v11 Polymer server-side architecture and Balance1 changes are preserved.
