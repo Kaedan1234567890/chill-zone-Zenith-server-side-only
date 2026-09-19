@@ -1,0 +1,26 @@
+ZENITH v11 BALANCE 1 + END LOCK — FIX2
+
+FIXED BUILD ERROR:
+- Minecraft 26.2 defines InsideBlockEffectApplier at:
+  net.minecraft.world.entity.InsideBlockEffectApplier
+- The failed build incorrectly imported it from:
+  net.minecraft.world.level.block.state.InsideBlockEffectApplier
+
+END LOCK BEHAVIOUR IS UNCHANGED:
+- /end lock blocks travel INTO The End.
+- Existing End portals are not removed, unlit, created, or modified.
+- Players already in The End can still leave.
+- /end unlock restores normal End travel.
+- Unlock title: THE END IS OPEN!
+- Subtitle: Good luck. Get the egg.
+- Lock title: THE END IS CLOSED!
+- Lock state remains saved in Zenith progression data.
+- Permission node remains: chillzonezenith.command.end
+
+PRESERVED:
+- Version 11 Polymer/server-side architecture.
+- Ravager Blade Strength III + Speed III for 10 seconds.
+- Active Branches Boss Blade CRAFTED / NOT CRAFTED status.
+
+VERSION:
+0.11.0-alpha-balance1-endlock-fix2-server-side
