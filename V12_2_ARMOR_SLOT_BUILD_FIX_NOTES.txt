@@ -1,0 +1,9 @@
+CHILL ZONE ZENITH 0.12.2-alpha - Armor Slot Build Fix
+
+Fixes the Minecraft 26.2 compile error caused by LivingEntity#getArmorSlots() no longer being available in these mappings.
+
+Zenith armor-chip logic now explicitly reads HEAD, CHEST, LEGS, and FEET with LivingEntity#getItemBySlot(EquipmentSlot).
+
+No balance changes:
+- Boss Blade active abilities: 50% max-health true damage through armor/shields, no intentional armor durability damage.
+- Zenith: lethal true damage, Totems can trigger, ~10% durability chip on equipped armor.

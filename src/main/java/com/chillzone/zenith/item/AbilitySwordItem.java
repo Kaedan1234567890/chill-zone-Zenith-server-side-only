@@ -15,6 +15,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -405,11 +406,20 @@ public class AbilitySwordItem extends Item implements PolymerItem {
     }
 
     private void chipArmorTenPercent(LivingEntity target) {
-        for (ItemStack armor : target.getArmorSlots()) {
+        EquipmentSlot[] armorSlots = {
+                EquipmentSlot.HEAD,
+                EquipmentSlot.CHEST,
+                EquipmentSlot.LEGS,
+                EquipmentSlot.FEET
+        };
+
+        for (EquipmentSlot slot : armorSlots) {
+            ItemStack armor = target.getItemBySlot(slot);
             if (armor.isEmpty() || !armor.isDamageableItem()) continue;
 
             int chip = Math.max(1, (int) Math.ceil(armor.getMaxDamage() * 0.10D));
-            armor.setDamageValue(Math.min(Math.max(0, armor.getMaxDamage() - 1), armor.getDamageValue() + chip));
+            int maxStoredDamage = Math.max(0, armor.getMaxDamage() - 1);
+            armor.setDamageValue(Math.min(maxStoredDamage, armor.getDamageValue() + chip));
         }
     }
 
