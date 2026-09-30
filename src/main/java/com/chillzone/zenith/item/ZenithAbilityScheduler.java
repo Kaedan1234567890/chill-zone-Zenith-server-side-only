@@ -153,10 +153,13 @@ public final class ZenithAbilityScheduler {
         }
 
         if (best != null) {
+            // Warden Boss Blade rule: 50% of MAX health, through armor and shields,
+            // with normal armor durability left untouched.
+            float amount = Math.max(1.0F, best.getMaxHealth() * 0.50F);
             best.hurtServer(
                     level,
-                    player.damageSources().playerAttack(player),
-                    10.0F
+                    player.damageSources().sonicBoom(player),
+                    amount
             );
 
             Vec3 push = best.position().subtract(player.position()).normalize().scale(1.4);

@@ -173,22 +173,22 @@ public final class ZenithItems {
         return switch (ability) {
             case ENDER_STEP -> "Blink 4 blocks forward.";
             case SHULKER_SHOT -> "Blink 5 blocks backward and slightly sideways.";
-            case DRAGON_WARP -> "Moving: 12-block damaging leap. Standing: breath burst, then retreat.";
+            case DRAGON_WARP -> "Boss ability: deal 50% max-health damage through armor and shields, then reposition.";
             case LAST_STAND -> "Gain exactly 8 absorption hearts for 8 seconds.";
             case VEX_CALL -> "Gain Speed III + Strength III for 8 seconds.";
-            case RAVAGER_CHARGE -> "Ram forward, then gain Speed III + Strength III for 10 seconds.";
+            case RAVAGER_CHARGE -> "Boss ability: charge through targets for 50% max-health damage, ignoring armor and shields.";
             case GUARDIAN_RAY -> "Hit your aimed target with Mining Fatigue for 10 seconds.";
             case TIDAL_BURST -> "Push nearby enemies away with a non-damaging wave.";
             case ELDER_CURSE -> "Nearby enemies in water immediately lose their air.";
-            case WRATH_OF_MONUMENT -> "Strong knockback + Mining Fatigue + Slowness.";
+            case WRATH_OF_MONUMENT -> "Boss ability: 50% max-health strike through armor/shields, plus knockback and debuffs.";
             case ECHO_SENSE -> "Reveal living targets within 18 blocks.";
             case SONIC_BOOM -> "Fire a weakened sonic hit; roughly four hits unarmoured.";
-            case SONIC_DEVASTATION -> "Reveal nearby targets, then fire a delayed heavy sonic beam.";
+            case SONIC_DEVASTATION -> "Reveal nearby targets, then fire a 50% max-health sonic beam through armor and shields.";
             case INFERNO -> "Ignite nearby enemies; damage comes from burning.";
             case GOLDEN_RUSH -> "Gain Speed II + Haste II for 12 seconds.";
             case GHAST_FIREBALL -> "Fire a mini flame shot; no terrain destruction.";
-            case WITHERING_BARRAGE -> "Fire one heavy Wither-style strike; about half base health unarmoured.";
-            case ZENITH_STORM -> "Unleash 15 lethal spectral blade lanes at once; Totems still work.";
+            case WITHERING_BARRAGE -> "Boss ability: deal 50% max health through armor and shields; armor durability is untouched.";
+            case ZENITH_STORM -> "Lethal strike through armor/shields; Totems still work and armor takes about 10% durability.";
         };
     }
 

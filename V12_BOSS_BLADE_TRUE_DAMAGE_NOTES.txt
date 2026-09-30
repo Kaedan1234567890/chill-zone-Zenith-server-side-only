@@ -1,0 +1,20 @@
+CHILL ZONE ZENITH 0.12.1-alpha - Boss Blade True Damage (server-side Polymer source)
+
+Applied to the correct uploaded server-side Polymer conversion source.
+
+Boss Blade active-ability rules:
+- Ender Dragon Blade: 50% of target MAX health through armor/shields; no intentional armor durability damage.
+- Ravager Blade: 50% of target MAX health through armor/shields; no intentional armor durability damage.
+- Elder Guardian Blade: 50% of target MAX health through armor/shields; no intentional armor durability damage.
+- Warden Blade: delayed beam deals 50% of target MAX health through armor/shields; no intentional armor durability damage.
+- Wither Blade: 50% of target MAX health through armor/shields; removed extra Wither damage so the active hit remains the intended 50%.
+
+Zenith:
+- Zenith Storm remains lethal through armor/shields.
+- Vanilla Totems are still allowed to save the target.
+- A target is processed only once per Zenith Storm activation, preventing overlapping lanes from instantly killing them after a Totem pop.
+- Equipped armor is intentionally chipped by about 10% of each piece's maximum durability, but the chip itself will not destroy the piece.
+
+Implementation note:
+- Armor/shield bypass uses the vanilla sonic-boom damage source rather than normal player-attack damage.
+- Existing Polymer/server-side conversion, progression, crafting, unique-item locks, models, sounds, and other sword abilities were left intact.

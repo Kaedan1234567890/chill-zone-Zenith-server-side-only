@@ -82,3 +82,9 @@ This package includes `.github/workflows/build.yml`. After uploading the extract
 
 ## Fix 3
 Updated command permissions and persistent SavedData code for the Minecraft 26.2 APIs.
+
+## 0.12.1-alpha Boss Blade True Damage update
+This source includes the Boss Blade damage rework on top of the server-side Polymer conversion:
+- five Boss Blade active abilities deal 50% of target max health through armor/shields without intentionally wearing armor;
+- Zenith remains lethal, Totems can save the target, overlapping lanes only process a target once, and Zenith chips armor by about 10% maximum durability.
+See `V12_BOSS_BLADE_TRUE_DAMAGE_NOTES.txt` for details.

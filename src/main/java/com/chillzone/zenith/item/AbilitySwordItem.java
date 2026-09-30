@@ -28,6 +28,7 @@ import net.minecraft.sounds.SoundSource;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class AbilitySwordItem extends Item implements PolymerItem {
 
@@ -136,11 +137,11 @@ public class AbilitySwordItem extends Item implements PolymerItem {
                 Vec3 horizontal = new Vec3(user.getDeltaMovement().x, 0.0, user.getDeltaMovement().z);
                 if (horizontal.lengthSqr() > 0.01) {
                     teleportForward(level, user, 12.0);
-                    blast(level, user, 4.5, 10.0F, 1.4);
+                    bossBlast(level, user, 4.5, 1.4);
                 } else {
                     // Standing still: breath burst, then escape backwards.
                     for (LivingEntity target : coneTargets(level, user, 8.0, 0.72)) {
-                        damage(level, user, target, 8.0F);
+                        bossBladeDamage(level, user, target);
                     }
                     portalTrail(level, user, 8.0);
                     Vec3 escape = user.position().subtract(horizontalLook(user).scale(6.0));
@@ -168,7 +169,7 @@ public class AbilitySwordItem extends Item implements PolymerItem {
                 Vec3 look = horizontalLook(user).scale(1.8);
                 user.setDeltaMovement(look.x, 0.35, look.z);
                 user.hurtMarked = true;
-                blast(level, user, 3.0, 10.0F, 2.2);
+                bossBlast(level, user, 3.0, 2.2);
                 user.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 200, 2));
                 user.addEffect(new MobEffectInstance(MobEffects.SPEED, 200, 2));
                 play(level, user, SoundEvents.RAVAGER_ROAR, 1.0F, 1.1F);
@@ -200,6 +201,7 @@ public class AbilitySwordItem extends Item implements PolymerItem {
                 pushAway(level, user, 8.0, 1.8);
                 LivingEntity target = targetInFront(level, user, 26.0);
                 if (target != null) {
+                    bossBladeDamage(level, user, target);
                     target.addEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE, 200, 2));
                     target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 200, 1));
                 }
@@ -268,11 +270,12 @@ public class AbilitySwordItem extends Item implements PolymerItem {
                         20, 0.3, 0.3, 0.3, 0.04);
             }
             case WITHERING_BARRAGE -> {
-                // Boss version: one focused Wither-skull style shot, ~half base health unarmoured.
+                // Boss Blade rule: exactly 50% of max health through armor and shields.
+                // Sonic-boom damage bypasses normal armor/shield mitigation and does not
+                // route through normal armor durability damage.
                 LivingEntity target = targetInFront(level, user, 28.0);
                 if (target != null) {
-                    damage(level, user, target, 10.0F);
-                    target.addEffect(new MobEffectInstance(MobEffects.WITHER, 80, 0));
+                    bossBladeDamage(level, user, target);
                 }
                 trail(level, user, 28.0, ParticleTypes.SOUL);
                 play(level, user, SoundEvents.WITHER_SHOOT, 1.0F, 1.0F);
@@ -284,9 +287,12 @@ public class AbilitySwordItem extends Item implements PolymerItem {
                 }
 
                 // Fifteen simultaneous spectral lanes:
-                // 7 left + centre + 7 right.
+                // 7 left + centre + 7 right. A target may only be processed once per
+                // activation so a Totem can save them instead of immediately being hit
+                // again by another overlapping lane.
+                Set<UUID> processedTargets = new java.util.HashSet<>();
                 for (int lane = -7; lane <= 7; lane++) {
-                    zenithLane(level, user, lane * 0.65);
+                    zenithLane(level, user, lane * 0.65, processedTargets);
                 }
 
                 level.sendParticles(
@@ -356,6 +362,55 @@ public class AbilitySwordItem extends Item implements PolymerItem {
 
     private void damage(ServerLevel level, Player attacker, LivingEntity target, float amount) {
         target.hurtServer(level, attacker.damageSources().playerAttack(attacker), amount);
+    }
+
+    /**
+     * Shared rule for the five Boss Blade active abilities.
+     * Deals 50% of the victim's MAX health and uses vanilla sonic-boom damage so
+     * armor and shields do not mitigate the hit. Because the damage bypasses armor,
+     * normal armor durability is left alone.
+     */
+    private void bossBladeDamage(ServerLevel level, Player attacker, LivingEntity target) {
+        float amount = Math.max(1.0F, target.getMaxHealth() * 0.50F);
+        target.hurtServer(level, attacker.damageSources().sonicBoom(attacker), amount);
+    }
+
+    private void bossBlast(
+            ServerLevel level,
+            Player user,
+            double radius,
+            double knockback
+    ) {
+        for (LivingEntity target : nearby(level, user, radius)) {
+            bossBladeDamage(level, user, target);
+
+            Vec3 push = target.position()
+                    .subtract(user.position())
+                    .normalize()
+                    .scale(knockback);
+
+            target.push(push.x, 0.35, push.z);
+        }
+    }
+
+    /**
+     * Zenith is intentionally different from ordinary Boss Blades: it is lethal
+     * through armor/shields, but vanilla Totems still get a chance to trigger.
+     * It also chips equipped armor by 10% of each piece's maximum durability.
+     */
+    private void zenithLethalDamage(ServerLevel level, Player attacker, LivingEntity target) {
+        chipArmorTenPercent(target);
+        float lethal = Math.max(10000.0F, target.getMaxHealth() * 100.0F);
+        target.hurtServer(level, attacker.damageSources().sonicBoom(attacker), lethal);
+    }
+
+    private void chipArmorTenPercent(LivingEntity target) {
+        for (ItemStack armor : target.getArmorSlots()) {
+            if (armor.isEmpty() || !armor.isDamageableItem()) continue;
+
+            int chip = Math.max(1, (int) Math.ceil(armor.getMaxDamage() * 0.10D));
+            armor.setDamageValue(Math.min(Math.max(0, armor.getMaxDamage() - 1), armor.getDamageValue() + chip));
+        }
     }
 
     private List<LivingEntity> nearby(ServerLevel level, Player user, double radius) {
@@ -514,7 +569,7 @@ public class AbilitySwordItem extends Item implements PolymerItem {
         }
     }
 
-    private void zenithLane(ServerLevel level, Player user, double sideways) {
+    private void zenithLane(ServerLevel level, Player user, double sideways, Set<UUID> processedTargets) {
         Vec3 look = user.getLookAngle().normalize();
         Vec3 side = new Vec3(-look.z, 0.0, look.x).normalize();
         Vec3 origin = user.getEyePosition().add(side.scale(sideways));
@@ -540,7 +595,9 @@ public class AbilitySwordItem extends Item implements PolymerItem {
                     hitBox,
                     entity -> entity != user && entity.isAlive()
             )) {
-                damage(level, user, target, 10000.0F);
+                if (processedTargets.add(target.getUUID())) {
+                    zenithLethalDamage(level, user, target);
+                }
             }
         }
     }
